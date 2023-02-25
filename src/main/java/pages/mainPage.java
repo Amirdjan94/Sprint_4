@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElementsLocatedBy;
@@ -12,25 +13,29 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllE
 public class MainPage {
     WebDriver driver;
     // Блок вопросов
-    private static final By questionBlock = By.xpath(".//div[@class=\"accordion\"]");
+    private final By questionBlock = By.xpath(".//div[@class=\"accordion\"]");
     // Строки с вопросами
-    private static final By question1 = By.id("accordion__heading-0");
-    private static final By question2 = By.id("accordion__heading-1");
-    private static final By question3 = By.id("accordion__heading-2");
-    private static final By question4 = By.id("accordion__heading-3");
-    private static final By question5 = By.id("accordion__heading-4");
-    private static final By question6 = By.id("accordion__heading-5");
-    private static final By question7 = By.id("accordion__heading-6");
-    private static final By question8 = By.id("accordion__heading-7");
+    private final By question1 = By.id("accordion__heading-0");
+    private final By question2 = By.id("accordion__heading-1");
+    private final By question3 = By.id("accordion__heading-2");
+    private final By question4 = By.id("accordion__heading-3");
+    private final By question5 = By.id("accordion__heading-4");
+    private final By question6 = By.id("accordion__heading-5");
+    private final By question7 = By.id("accordion__heading-6");
+    private final By question8 = By.id("accordion__heading-7");
     // Строки с ответами
-    private static final By Answer1 = By.id("accordion__panel-0");
-    private static final By Answer2 = By.id("accordion__panel-1");
-    private static final By Answer3 = By.id("accordion__panel-2");
-    private static final By Answer4 = By.id("accordion__panel-3");
-    private static final By Answer5 = By.id("accordion__panel-4");
-    private static final By Answer6 = By.id("accordion__panel-5");
-    private static final By Answer7 = By.id("accordion__panel-6");
-    private static final By Answer8 = By.id("accordion__panel-7");
+    private final By Answer1 = By.id("accordion__panel-0");
+    private final By Answer2 = By.id("accordion__panel-1");
+    private final By Answer3 = By.id("accordion__panel-2");
+    private final By Answer4 = By.id("accordion__panel-3");
+    private final By Answer5 = By.id("accordion__panel-4");
+    private final By Answer6 = By.id("accordion__panel-5");
+    private final By Answer7 = By.id("accordion__panel-6");
+    private final By Answer8 = By.id("accordion__panel-7");
+    // Кнопка создания задачи из заголовки сайта
+    private final By btnOpenCreateOrderFormSiteHeader = By.xpath(".//div[@class='Home_HomePage__ZXKIX']//button[text()='Заказать']");
+    // Кнопка создания задачи bp блока флоу работы сайта
+    private final By btnOpenCreateOrderFormRoadMap = By.xpath(".//div[@class='Home_ThirdPart__LSTEE']//button[text()='Заказать']");
     public MainPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -115,6 +120,25 @@ public class MainPage {
         // Клик на первый вопрос
         this.btnClickQuestionRow(numberRow);
     }
+    public CreateOrderPage openCreateOrderPageFormSiteHeader(){ // Открытие формы создания заказа из шапки сайта
+        // Ожидание загрузки кнопки создания заказа
+        new WebDriverWait(driver, WebDriverConfig.WAIT_TIMEOUT_SECOND)
+                .until(ExpectedConditions.elementToBeClickable(btnOpenCreateOrderFormSiteHeader));
+        driver.findElement(btnOpenCreateOrderFormSiteHeader).click();
+        return new CreateOrderPage(driver);
+    }
+    public CreateOrderPage openCreateOrderPageFromRoadMap(){ // Открытие формы создания заказа из блока флоу работы сайта
+        // Ожидание загрузки кнопки создания заказа
+        new WebDriverWait(driver, WebDriverConfig.WAIT_TIMEOUT_SECOND)
+                .until(ExpectedConditions.elementToBeClickable(btnOpenCreateOrderFormRoadMap));
+        // Скролл до кнопки
+        WebElement elementBtnOpenCreateOrder = driver.findElement(btnOpenCreateOrderFormRoadMap);
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", elementBtnOpenCreateOrder);
+        // Клик на кнопку
+        driver.findElement(btnOpenCreateOrderFormRoadMap).click();
+        return new CreateOrderPage(driver);
+    }
+
 
 
 
